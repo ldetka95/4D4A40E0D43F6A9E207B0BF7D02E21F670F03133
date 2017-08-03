@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>ChanEngine</title>
+    </h:head>
+    <h:body>
+        <h:form enctype="multipart/form-data">
+            <h:inputText value="${newThreadBean.input}"/>
+            <h:inputFile value="${newThreadBean.fileUpload}">
+            </h:inputFile>
+            <h:commandButton value="Submit" action="${newThreadBean.post()}"/>
+        </h:form>
+        <h:dataTable value="${browseGetPostListBean.getPosts()}" var="item">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Recent posts" />
+                </f:facet>
+                <h:outputText value="By Anonymous on ${item.createTime}"/><br/>
+                <h:panelGroup rendered="${item.isImagePathNotNull()}">
+                    <!--<h:graphicImage style="max-width: 64px; max-height: 64px" library="threadImage" name="${item.imagePath}"/>-->
+                    <h:graphicImage style="max-width: 64px; max-height: 64px" value="${item.imageAbsolutePath()}"/>
+                </h:panelGroup>
+                <h:panelGroup>
+                    <h:outputText value=" ${item.text}"/>
+                </h:panelGroup>
+                <br/>
+            </h:column>
+        </h:dataTable>
+        <h:form>
+            <c:forEach items="${browseGetPostListBean.getAllowedPages()}" var="item">
+                <h:commandLink value="${item}" action="#{browseGetPostListBean.setPage(item)}"/>
+            </c:forEach>
+        </h:form>
+        <br/>
+    </h:body>
+</html>
+
